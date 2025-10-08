@@ -1,21 +1,22 @@
-# استخدم صورة خفيفة من ألباين
 FROM alpine:latest
 
-# فتح المنفذ المستخدم في config.json
+# فتح المنفذ
 EXPOSE 8080
 
-# مجلد العمل داخل الحاوية
+# مجلد العمل
 WORKDIR /app
 
-# تثبيت الأدوات الأساسية وتنزيل v2ray
-RUN apk add --no-cache wget unzip \
-    && wget https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip \
-    && unzip v2ray-linux-64.zip -d /app \
-    && rm v2ray-linux-64.zip
+# تثبيت wget و unzip
+RUN apk add --no-cache wget unzip
 
-# نسخ ملف إعداد trojan-ws
+# تنزيل وتشغيل v2ray
+RUN wget -O v2ray.zip https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip \
+    && unzip v2ray.zip -d /app \
+    && chmod +x /app/v2ray \
+    && rm v2ray.zip
+
+# نسخ ملف الإعداد
 COPY config.json /app/config.json
 
-# تشغيل v2ray باستخدام ملف الإعداد
-ENTRYPOINT ["./v2ray", "run", "-config", "config.json"]
-
+# تشغيل السيرفر
+ENTRYPOINT ["/app/v2ray", "run", "-config", "/app/config.json"]
