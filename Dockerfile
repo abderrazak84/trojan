@@ -20,3 +20,4 @@ COPY config.json /app/config.json
 
 # تشغيل السيرفر
 ENTRYPOINT ["/app/v2ray", "run", "-config", "/app/config.json"]
+
