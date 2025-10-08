@@ -12,3 +12,4 @@ RUN apk add --no-cache wget unzip \
 COPY config.json /app/config.json
 
 ENTRYPOINT ["/app/v2ray", "run", "-config", "/app/config.json"]
+
