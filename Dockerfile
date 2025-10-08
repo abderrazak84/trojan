@@ -18,3 +18,4 @@ COPY config.json /app/config.json
 
 # تشغيل v2ray باستخدام ملف الإعداد
 ENTRYPOINT ["./v2ray", "run", "-config", "config.json"]
+
