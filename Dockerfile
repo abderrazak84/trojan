@@ -1,15 +1,10 @@
-FROM alpine:latest
+FROM teddysun/v2ray:latest
 
+# Cloud Run default is 8080
 EXPOSE 8080
-WORKDIR /app
 
-RUN apk add --no-cache wget unzip \
-    && wget -O v2ray.zip https://github.com/v2fly/v2ray-core/releases/download/v5.20.1/v2ray-linux-64.zip \
-    && unzip v2ray.zip -d /app \
-    && chmod +x /app/v2ray \
-    && rm v2ray.zip
+# Copy config
+COPY config.json /etc/v2ray/config.json
 
-COPY config.json /app/config.json
-
-ENTRYPOINT ["/app/v2ray", "run", "-config", "/app/config.json"]
-
+# Run V2Ray (v5 syntax; -c is safe)
+CMD ["v2ray", "run", "-c", "/etc/v2ray/config.json"]
